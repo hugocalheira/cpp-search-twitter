@@ -10,7 +10,6 @@
 
 #include <sstream>
 #include <vector>
-// #include <algorithm>
 
 using namespace std;
 
@@ -77,20 +76,6 @@ string getStringData(string search) {
 
 	return readBuffer;
 }
-
-// string split(string s, string delimiter) {
-// 	size_t pos = 0;
-// 	string token;
-// 	while ((pos = s.find(delimiter)) != string::npos) {
-// 		token = s.substr(0, pos);
-
-// 		cout << token << endl;
-// 		s.erase(0, pos + delimiter.length());
-// 	}
-// 	// cout << s << endl;
-// 	return s;
-// }
-
 
 string ReplaceAll(std::string str, const std::string& from, const std::string& to) {
     size_t start_pos = 0;
