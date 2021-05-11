@@ -10,6 +10,7 @@
 
 #include <sstream>
 #include <vector>
+// #include <algorithm>
 
 using namespace std;
 
@@ -90,11 +91,35 @@ string getStringData(string search) {
 // 	return s;
 // }
 
+
+string ReplaceAll(std::string str, const std::string& from, const std::string& to) {
+    size_t start_pos = 0;
+    while((start_pos = str.find(from, start_pos)) != std::string::npos) {
+        str.replace(start_pos, from.length(), to);
+        start_pos += to.length();
+    }
+    return str;
+}
+
+string sanitize(std::string str) {
+	vector<string> iChars = {"ç","Ç","á","é","í","ó","ú","ý","Á","É","Í","Ó","Ú","Ý","à","è","ì","ò","ù","À","È","Ì","Ò","Ù","ã","õ","ñ","ä","ë","ï","ö","ü","ÿ","Ä","Ë","Ï","Ö","Ü","Ã","Õ","Ñ","â","ê","î","ô","û","Â","Ê","Î","Ô","Û"};
+	vector<string> oChars = {"c","C","a","e","i","o","u","y","A","E","I","O","U","Y","a","e","i","o","u","A","E","I","O","U","a","o","n","a","e","i","o","u","y","A","E","I","O","U","A","O","N","a","e","i","o","u","A","E","I","O","U"};
+
+	for (int i = 0; i < iChars.size(); i++){
+		string& from = iChars[i];
+		string& to = oChars[i];
+		str = ReplaceAll(str, from, to);
+	}
+    return str;
+}
+
 vector<string> splitToArray(string s1) {
     istringstream iss(s1);
     vector<string> result;
-    for(string s;iss>>s;)
+    for(string s;iss>>s;) {
+		s = sanitize(s);
         result.push_back(s);
+	}
 
 	cout << result.size() << " WORDS" << endl;
 	return result;
