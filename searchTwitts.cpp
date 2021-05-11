@@ -77,18 +77,18 @@ string getStringData(string search) {
 	return readBuffer;
 }
 
-string split(string s, string delimiter) {
-	size_t pos = 0;
-	string token;
-	while ((pos = s.find(delimiter)) != string::npos) {
-		token = s.substr(0, pos);
+// string split(string s, string delimiter) {
+// 	size_t pos = 0;
+// 	string token;
+// 	while ((pos = s.find(delimiter)) != string::npos) {
+// 		token = s.substr(0, pos);
 
-		cout << token << endl;
-		s.erase(0, pos + delimiter.length());
-	}
-	// cout << s << endl;
-	return s;
-}
+// 		cout << token << endl;
+// 		s.erase(0, pos + delimiter.length());
+// 	}
+// 	// cout << s << endl;
+// 	return s;
+// }
 
 vector<string> splitToArray(string s1) {
     istringstream iss(s1);
@@ -96,11 +96,37 @@ vector<string> splitToArray(string s1) {
     for(string s;iss>>s;)
         result.push_back(s);
 
+	cout << result.size() << " WORDS" << endl;
 	return result;
+}
 
-    // int n=result.size();
-    // for(int i=0;i<n;i++)
-    //     cout<<result[i]<<endl;
+vector<string> prepareToLCDOutput(string text) {
+	vector<string> words = splitToArray(text);
+	int maxCount = 16;
+	vector<string> lines;
+	int lineLength = 0;
+    
+	string lineString;
+	vector<string> linesContainer;
+
+	for(int i=0;i<words.size();i++) {
+
+		if (lineLength + words[i].length() + 1 <= maxCount){
+			lineString += (lineString.length() > 0 ? " " : "") + words[i];
+		} else {
+			linesContainer.push_back(lineString);
+			lineString = words[i];
+		}
+
+		if (i + 1 == words.size()) {
+			linesContainer.push_back(lineString);
+			cout << linesContainer.size() << " LINES" << endl;
+		}
+		lineLength = lineString.length();
+	}
+
+	return linesContainer;
+
 }
 
 int main(int total, char* args[]) {
@@ -124,20 +150,17 @@ int main(int total, char* args[]) {
 		cout << "------------------------------------" << endl;
 		cout << getAuthor(users, data[i]["author_id"]) << " - " << data[i]["created_at"].asString() << endl;
 		cout << data[i]["text"].asString() << endl;
+		
+		cout << endl;
+
+		vector<string> result = prepareToLCDOutput(data[i]["text"].asString());
+
+		int n=result.size();
+		for(int i=0;i<n;i++)
+			cout<<"> "<<result[i]<<endl;
+		
+		cout << endl;
 	}
-
-	// cout << endl;
-	// cout << endl;
-	// cout << "###################################################" << endl;
-
-    // vector<string> result = splitToArray(data[1]["text"].asString());
-    // int n=result.size();
-    // for(int i=0;i<n;i++)
-    //     cout<<result[i]<<endl;
-
-	// for (int i = 0; i < data.size(); i++) {
-	// cout << split(data[0]["text"].asString(), " ") << endl;
-	// }
 
 	return 0;
 }
